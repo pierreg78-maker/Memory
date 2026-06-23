@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Memory – Atelier Mémoire</title>
+<style>
+  :root {
+    --bg: #FFF8F0;
+    --surface: #FFFFFF;
+    --primary: #E07A3A;
+    --primary-dark: #C4622A;
+    --accent: #5B8E6E;
+    --text: #2C2C2C;
+    --text-light: #666;
+    --card-back: #5B8E6E;
+    --card-radius: 16px;
+    --shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Georgia', serif;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* HEADER */
+  header {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    text-align: center;
+    padding: 18px 16px 14px;
+    box-shadow: var(--shadow);
+  }
+  header h1 {
+    font-size: 1.8rem;
+    letter-spacing: 0.02em;
+  }
+  header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 2px;
+  }
+
+  /* ÉCRAN ACCUEIL */
+  #screen-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 24px;
+    gap: 16px;
+    width: 100%;
+    max-width: 480px;
+  }
+  #screen-home h2 {
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .level-btn {
+    width: 100%;
+    padding: 22px 16px;
+    border: none;
+    border-radius: var(--card-radius);
+    font-family: 'Georgia', serif;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .level-btn:active { transform: scale(0.97); }
+  .level-btn .sub {
+    font-size: 0.95rem;
+    font-weight: normal;
+    opacity: 0.85;
+  }
+
+  .btn-easy   { background: #A8D5B5; color: #1a4d2e; }
+  .btn-medium { background: #F5C97A; color: #5a3800; }
+  .btn-hard   { background: #F4957A; color: #5a1500; }
+
+  /* ÉCRAN JEU */
+  #screen-game { display: none; flex-direction: column; align-items: center; width: 100%; }
+
+  /* BARRE STATS */
+  .stats-bar {
+    width: 100%;
+    max-width: 540px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .stat-value {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* GRILLE */
+  #grid {
+    display: grid;
+    gap: 10px;
+    padding: 16px;
+    width: 100%;
+    max-width: 540px;
+  }
+
+  /* CARTE */
+  .card {
+    aspect-ratio: 1;
+    perspective: 600px;
+    cursor: pointer;
+  }
+  .card-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
+    border-radius: var(--card-radius);
+  }
+  .card.flipped .card-inner  { transform: rotateY(180deg); }
+  .card.matched .card-inner  { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    width: 100%; height: 100%;
+    border-radius: var(--card-radius);
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-back {
+    background: var(--card-back);
+    font-size: 1.6rem;
+    color: white;
+  }
+  .card-back::after { content: "?"; }
+
+  .card-front {
+    background: white;
+    transform: rotateY(180deg);
+    font-size: 2.6rem;
+    box-shadow: inset 0 0 0 3px #e0e0e0;
+  }
+  .card.matched .card-front {
+    background: #D4F0DE;
+    box-shadow: inset 0 0 0 3px var(--accent);
+  }
+
+  /* BOUTON RETOUR */
+  #btn-back {
+    margin: 8px 16px 0;
+    align-self: flex-start;
+    background: none;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+  }
+
+  /* VICTOIRE */
+  #screen-win {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 24px;
+    gap: 20px;
+    text-align: center;
+    max-width: 480px;
+    width: 100%;
+  }
+  #screen-win .trophy { font-size: 5rem; }
+  #screen-win h2 { font-size: 2rem; color: var(--primary-dark); }
+  #screen-win p  { font-size: 1.2rem; color: var(--text-light); }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--card-radius);
+    padding: 18px 32px;
+    font-size: 1.2rem;
+    font-family: 'Georgia', serif;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 320px;
+  }
+  .btn-primary:active { transform: scale(0.97); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🃏 Memory</h1>
+  <p>Atelier Mémoire</p>
+</header>
+
+<!-- ACCUEIL -->
+<div id="screen-home">
+  <h2>Choisissez le niveau</h2>
+
+  <button class="level-btn btn-easy"   onclick="startGame(6)">
+    🟢 Facile
+    <span class="sub">6 paires — 12 cartes</span>
+  </button>
+
+  <button class="level-btn btn-medium" onclick="startGame(10)">
+    🟡 Moyen
+    <span class="sub">10 paires — 20 cartes</span>
+  </button>
+
+  <button class="level-btn btn-hard"   onclick="startGame(15)">
+    🔴 Difficile
+    <span class="sub">15 paires — 30 cartes</span>
+  </button>
+</div>
+
+<!-- JEU -->
+<div id="screen-game">
+  <button id="btn-back" onclick="goHome()">← Retour</button>
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-value" id="stat-pairs">0</span>
+      <span class="stat-label">Paires</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="stat-tries">0</span>
+      <span class="stat-label">Essais</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value" id="stat-time">0:00</span>
+      <span class="stat-label">Temps</span>
+    </div>
+  </div>
+  <div id="grid"></div>
+</div>
+
+<!-- VICTOIRE -->
+<div id="screen-win">
+  <div class="trophy">🏆</div>
+  <h2>Bravo !</h2>
+  <p id="win-msg"></p>
+  <button class="btn-primary" onclick="goHome()">Rejouer</button>
+</div>
+
+<script>
+const EMOJIS = [
+  // Fleurs
+  '🌸','🌺','🌻','🌹','🌷','🌼','💐','🪷','🏵️','🌾',
+  // Animaux
+  '🐘','🦁','🐬','🦋','🐢','🦜','🐝','🦔','🐿️','🦩',
+  // Bâtiments / villes
+  '🏰','⛪','🕌','🗼','🏯','🗽','⛩️','🕍','🏛️','🎡',
+];
+
+let flipped = [], matched = 0, tries = 0, total = 0;
+let locked = false, timerInterval = null, seconds = 0;
+
+function startGame(pairs) {
+  total = pairs;
+  matched = 0; tries = 0; seconds = 0;
+  flipped = []; locked = false;
+
+  const pool = [...EMOJIS].sort(() => Math.random() - 0.5).slice(0, pairs);
+  const cards = [...pool, ...pool].sort(() => Math.random() - 0.5);
+
+  // Grille : colonnes adaptées
+  const grid = document.getElementById('grid');
+  const cols = pairs <= 6 ? 3 : pairs <= 10 ? 4 : 5;
+  grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  grid.innerHTML = '';
+
+  cards.forEach((emoji, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.emoji = emoji;
+    card.dataset.index = i;
+    card.innerHTML = `
+      <div class="card-inner">
+        <div class="card-face card-back"></div>
+        <div class="card-face card-front">${emoji}</div>
+      </div>`;
+    card.addEventListener('click', () => flipCard(card));
+    grid.appendChild(card);
+  });
+
+  updateStats();
+  show('screen-game');
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    seconds++;
+    const m = Math.floor(seconds / 60);
+    const s = String(seconds % 60).padStart(2, '0');
+    document.getElementById('stat-time').textContent = `${m}:${s}`;
+  }, 1000);
+}
+
+function flipCard(card) {
+  if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+  card.classList.add('flipped');
+  flipped.push(card);
+
+  if (flipped.length === 2) {
+    locked = true;
+    tries++;
+    const [a, b] = flipped;
+    if (a.dataset.emoji === b.dataset.emoji) {
+      setTimeout(() => {
+        a.classList.add('matched');
+        b.classList.add('matched');
+        matched++;
+        updateStats();
+        flipped = []; locked = false;
+        if (matched === total) endGame();
+      }, 500);
+    } else {
+      setTimeout(() => {
+        a.classList.remove('flipped');
+        b.classList.remove('flipped');
+        flipped = []; locked = false;
+        updateStats();
+      }, 1000);
+    }
+  }
+}
+
+function updateStats() {
+  document.getElementById('stat-pairs').textContent = `${matched}/${total}`;
+  document.getElementById('stat-tries').textContent = tries;
+}
+
+function endGame() {
+  clearInterval(timerInterval);
+  const m = Math.floor(seconds / 60);
+  const s = String(seconds % 60).padStart(2, '0');
+  document.getElementById('win-msg').textContent =
+    `${total} paires trouvées en ${tries} essais et ${m}:${s} !`;
+  setTimeout(() => show('screen-win'), 600);
+}
+
+function goHome() {
+  clearInterval(timerInterval);
+  show('screen-home');
+}
+
+function show(id) {
+  ['screen-home','screen-game','screen-win'].forEach(s => {
+    const el = document.getElementById(s);
+    el.style.display = (s === id) ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>
