@@ -7,12 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #12100e;
-            --fg: #f0e8db;
-            --muted: #7d7162;
-            --accent: #c9a04e;
-            --accent-light: #dfc07a;
-            --border: rgba(201,160,78,0.18);
+            --bg: #FAF7F1;
+            --fg: #1B211E;
+            --muted: #4A6B72;
+            --accent: #E4762F;
+            --accent-light: #EFA06B;
+            --slate: #4F7B87;
+            --sage: #74A395;
+            --border: rgba(27,33,30,0.12);
         }
 
         *, *::before, *::after {
@@ -31,7 +33,7 @@
     justify-content: center;
     width: 58px;
     height: 58px;
-    background: #4A7CCC;
+    background: var(--slate);
     color: white;
     text-decoration: none;
     border-radius: 50%;
@@ -39,7 +41,7 @@
     font-weight: 700;
     line-height: 1.05;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    box-shadow: 0 4px 12px rgba(27,33,30,0.25);
     transition: transform .15s ease, filter .15s ease;
   }
 
@@ -71,19 +73,19 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(100px);
-            opacity: 0.12;
+            opacity: 0.07;
             animation: orbFloat 22s ease-in-out infinite;
         }
 
         .bg-orb:nth-child(1) {
             width: 450px; height: 450px;
-            background: var(--accent);
+            background: var(--slate);
             top: -120px; right: -80px;
         }
 
         .bg-orb:nth-child(2) {
             width: 350px; height: 350px;
-            background: #8b5e2f;
+            background: var(--sage);
             bottom: -80px; left: -60px;
             animation-delay: -8s;
         }
@@ -93,7 +95,7 @@
             background: var(--accent-light);
             top: 45%; left: 55%;
             animation-delay: -15s;
-            opacity: 0.08;
+            opacity: 0.05;
         }
 
         @keyframes orbFloat {
@@ -160,12 +162,12 @@
             display: flex;
             gap: 0;
             padding: 4px;
-            background: rgba(30, 24, 18, 0.55);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: 100px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 20px rgba(27,33,30,0.10);
         }
 
         .diff-btn {
@@ -187,9 +189,9 @@
         .diff-btn:hover { color: var(--fg); }
 
         .diff-btn.active {
-            color: var(--bg);
+            color: var(--fg);
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            box-shadow: 0 2px 12px rgba(201,160,78,0.35);
+            box-shadow: 0 2px 12px rgba(228,118,47,0.35);
             font-weight: 600;
         }
 
@@ -203,12 +205,12 @@
             display: flex;
             gap: 2rem;
             padding: 0.65rem 2.2rem;
-            background: rgba(30, 24, 18, 0.55);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid var(--border);
             border-radius: 100px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 20px rgba(27,33,30,0.10);
         }
 
         .stat {
@@ -284,18 +286,18 @@
             overflow: hidden;
         }
 
-        /* ===== DOS DE CARTE — Effet glossy ===== */
+        /* ===== DOS DE CARTE — Bleu ardoise ===== */
         .card-back {
             background:
-                radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(201,160,78,0.05) 0%, transparent 50%),
-                linear-gradient(155deg, #362c1f 0%, #2a2218 35%, #1e1812 65%, #26201a 100%);
-            border: 1px solid rgba(201,160,78,0.22);
+                radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.10) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(27,33,30,0.08) 0%, transparent 50%),
+                linear-gradient(155deg, #5C8894 0%, #4F7B87 45%, #3E636D 100%);
+            border: 1px solid rgba(255,255,255,0.25);
             box-shadow:
-                0 2px 6px rgba(0,0,0,0.45),
-                0 8px 28px rgba(0,0,0,0.30),
-                inset 0 1px 0 rgba(255,255,255,0.06),
-                inset 0 -1px 0 rgba(0,0,0,0.2);
+                0 2px 6px rgba(27,33,30,0.20),
+                0 8px 28px rgba(27,33,30,0.14),
+                inset 0 1px 0 rgba(255,255,255,0.12),
+                inset 0 -1px 0 rgba(0,0,0,0.12);
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -307,11 +309,11 @@
             background: linear-gradient(
                 135deg,
                 transparent 36%,
-                rgba(255,255,255,0.02) 40%,
-                rgba(255,255,255,0.09) 47%,
-                rgba(255,255,255,0.14) 50%,
-                rgba(255,255,255,0.09) 53%,
-                rgba(255,255,255,0.02) 60%,
+                rgba(255,255,255,0.03) 40%,
+                rgba(255,255,255,0.12) 47%,
+                rgba(255,255,255,0.18) 50%,
+                rgba(255,255,255,0.12) 53%,
+                rgba(255,255,255,0.03) 60%,
                 transparent 64%
             );
             pointer-events: none;
@@ -323,20 +325,20 @@
         }
 
         .card:not(.flipped):not(.matched):hover .card-back {
-            border-color: rgba(201,160,78,0.38);
+            border-color: rgba(255,255,255,0.45);
             box-shadow:
-                0 2px 6px rgba(0,0,0,0.45),
-                0 8px 28px rgba(0,0,0,0.30),
-                0 0 18px rgba(201,160,78,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.06),
-                inset 0 -1px 0 rgba(0,0,0,0.2);
+                0 2px 6px rgba(27,33,30,0.20),
+                0 8px 28px rgba(27,33,30,0.14),
+                0 0 18px rgba(79,123,135,0.25),
+                inset 0 1px 0 rgba(255,255,255,0.12),
+                inset 0 -1px 0 rgba(0,0,0,0.12);
         }
 
         .card-back::after {
             content: '';
             position: absolute;
             inset: 6px;
-            border: 1px solid rgba(201,160,78,0.10);
+            border: 1px solid rgba(255,255,255,0.20);
             border-radius: 8px;
             pointer-events: none;
         }
@@ -355,22 +357,22 @@
             display: block;
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            color: var(--accent);
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            color: #FAF7F1;
+            text-shadow: 0 1px 3px rgba(27,33,30,0.35);
         }
 
         .card-back-text .line1 {
             font-size: 0.62rem;
             letter-spacing: 0.14em;
             text-transform: uppercase;
-            opacity: 0.6;
+            opacity: 0.7;
         }
 
         .card-back-text .line2 {
             font-size: 0.8rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            opacity: 0.85;
+            opacity: 0.95;
             margin-top: 1px;
         }
 
@@ -386,8 +388,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.4;
+            background: linear-gradient(90deg, transparent, #FAF7F1, transparent);
+            opacity: 0.5;
             border-radius: 1px;
         }
 
@@ -407,23 +409,23 @@
         .grid.cols-6 .card-front .emoji { font-size: 1.4rem; }
         .grid.cols-6 .card-face { border-radius: 9px; }
 
-        /* ===== FACE DE CARTE ===== */
+        /* ===== FACE DE CARTE — Blanc cassé ===== */
         .card-front {
             background:
-                radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.04) 0%, transparent 60%),
-                linear-gradient(155deg, #2e261c 0%, #241e16 50%, #1c1810 100%);
-            border: 1px solid rgba(201,160,78,0.28);
+                radial-gradient(ellipse at 50% 40%, rgba(79,123,135,0.05) 0%, transparent 60%),
+                linear-gradient(155deg, #FFFFFF 0%, #FAF7F1 60%, #F3EEE4 100%);
+            border: 1px solid rgba(79,123,135,0.25);
             transform: rotateY(180deg);
             box-shadow:
-                0 2px 6px rgba(0,0,0,0.45),
-                0 8px 28px rgba(0,0,0,0.30),
-                inset 0 1px 0 rgba(255,255,255,0.05);
+                0 2px 6px rgba(27,33,30,0.15),
+                0 8px 28px rgba(27,33,30,0.10),
+                inset 0 1px 0 rgba(255,255,255,0.6);
         }
 
         .card-front .emoji {
             font-size: 2.4rem;
             line-height: 1;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.35));
+            filter: drop-shadow(0 3px 6px rgba(27,33,30,0.25));
             transition: transform 0.3s ease;
         }
 
@@ -431,12 +433,12 @@
 
         /* ===== État : paire trouvée ===== */
         .card.matched .card-front {
-            border-color: rgba(201,160,78,0.50);
+            border-color: rgba(228,118,47,0.55);
             box-shadow:
-                0 2px 6px rgba(0,0,0,0.45),
-                0 0 24px rgba(201,160,78,0.12),
-                0 0 48px rgba(201,160,78,0.05),
-                inset 0 1px 0 rgba(255,255,255,0.06);
+                0 2px 6px rgba(27,33,30,0.15),
+                0 0 24px rgba(228,118,47,0.16),
+                0 0 48px rgba(228,118,47,0.08),
+                inset 0 1px 0 rgba(255,255,255,0.6);
         }
 
         .card.matched .card-front .emoji {
@@ -513,7 +515,7 @@
             text-transform: uppercase;
             color: var(--accent);
             background: transparent;
-            border: 1px solid rgba(201,160,78,0.25);
+            border: 1px solid rgba(228,118,47,0.30);
             padding: 0.65rem 2rem;
             border-radius: 100px;
             cursor: pointer;
@@ -526,14 +528,14 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(201,160,78,0.1), rgba(201,160,78,0.03));
+            background: linear-gradient(135deg, rgba(228,118,47,0.10), rgba(228,118,47,0.03));
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
         .btn-restart:hover {
-            border-color: rgba(201,160,78,0.55);
-            box-shadow: 0 0 22px rgba(201,160,78,0.1);
+            border-color: rgba(228,118,47,0.55);
+            box-shadow: 0 0 22px rgba(228,118,47,0.12);
         }
 
         .btn-restart:hover::before { opacity: 1; }
@@ -552,7 +554,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(18, 16, 14, 0.88);
+            background: rgba(27, 33, 30, 0.45);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             opacity: 0;
@@ -567,17 +569,17 @@
 
         .win-panel {
             background:
-                radial-gradient(ellipse at 50% 0%, rgba(201,160,78,0.06) 0%, transparent 60%),
-                linear-gradient(160deg, #2a241c 0%, #1e1812 100%);
-            border: 1px solid rgba(201,160,78,0.25);
+                radial-gradient(ellipse at 50% 0%, rgba(228,118,47,0.06) 0%, transparent 60%),
+                linear-gradient(160deg, #FFFFFF 0%, #FAF7F1 100%);
+            border: 1px solid rgba(79,123,135,0.22);
             border-radius: 28px;
             padding: 3rem 2.5rem 2.5rem;
             text-align: center;
             max-width: 380px;
             width: 90%;
             box-shadow:
-                0 24px 80px rgba(0,0,0,0.55),
-                0 0 50px rgba(201,160,78,0.06);
+                0 24px 80px rgba(27,33,30,0.20),
+                0 0 50px rgba(228,118,47,0.08);
             transform: translateY(30px) scale(0.95);
             transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -590,7 +592,7 @@
             font-size: 2.8rem;
             margin-bottom: 0.8rem;
             display: block;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 4px 8px rgba(27,33,30,0.20));
         }
 
         .win-panel h2 {
@@ -637,19 +639,19 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--bg);
+            color: var(--fg);
             background: linear-gradient(135deg, var(--accent), var(--accent-light));
             border: none;
             padding: 0.85rem 2.6rem;
             border-radius: 100px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 18px rgba(201,160,78,0.30);
+            box-shadow: 0 4px 18px rgba(228,118,47,0.30);
         }
 
         .btn-again:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(201,160,78,0.40);
+            box-shadow: 0 8px 30px rgba(228,118,47,0.40);
         }
 
         .btn-again:active { transform: translateY(0); }
