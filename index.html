@@ -235,22 +235,31 @@
         }
 
         /* ===== Grille de cartes ===== */
-        /* La taille des cartes (--card-size) est calculée en JS pour remplir
-           au mieux l'espace disponible (largeur ET hauteur), quel que soit
-           le niveau de difficulté et la taille de l'écran. */
+        /* La largeur (--card-w) et la hauteur (--card-h) des cartes sont
+           calculées séparément en JS : les cartes sont rectangulaires afin
+           de remplir tout l'espace disponible, horizontalement ET
+           verticalement, quel que soit le niveau de difficulté. */
         .grid {
             display: grid;
             gap: 10px;
             perspective: 1000px;
         }
 
-        .grid.cols-4 { grid-template-columns: repeat(4, var(--card-size, 80px)); }
-        .grid.cols-5 { grid-template-columns: repeat(5, var(--card-size, 80px)); }
-        .grid.cols-6 { grid-template-columns: repeat(6, var(--card-size, 80px)); }
+        .grid.cols-4 {
+            grid-template-columns: repeat(4, var(--card-w, 80px));
+            grid-template-rows: repeat(3, var(--card-h, 80px));
+        }
+        .grid.cols-5 {
+            grid-template-columns: repeat(5, var(--card-w, 80px));
+            grid-template-rows: repeat(4, var(--card-h, 80px));
+        }
+        .grid.cols-6 {
+            grid-template-columns: repeat(6, var(--card-w, 80px));
+            grid-template-rows: repeat(5, var(--card-h, 80px));
+        }
 
         /* ===== Carte individuelle ===== */
         .card {
-            aspect-ratio: 1;
             cursor: pointer;
             position: relative;
             opacity: 0;
@@ -395,14 +404,14 @@
             border-radius: 1px;
         }
 
-        /* Tailles du dos de carte proportionnelles à la taille réelle de la
-           carte (--card-size), calculée dynamiquement en JS : plus besoin de
-           paliers fixes par nombre de colonnes. */
-        .card-back-text .line1 { font-size: calc(var(--card-size, 80px) * 0.078); }
-        .card-back-text .line2 { font-size: calc(var(--card-size, 80px) * 0.10); }
-        .card-back-text .ornament { width: calc(var(--card-size, 80px) * 0.15); }
-        .card-back::after { inset: calc(var(--card-size, 80px) * 0.05); }
-        .card-face { border-radius: calc(var(--card-size, 80px) * 0.14); }
+        /* Tailles du dos de carte proportionnelles à la plus petite
+           dimension de la carte (largeur ou hauteur), calculée dynamiquement
+           en JS : plus besoin de paliers fixes par nombre de colonnes. */
+        .card-back-text .line1 { font-size: calc(min(var(--card-w, 80px), var(--card-h, 80px)) * 0.078); }
+        .card-back-text .line2 { font-size: calc(min(var(--card-w, 80px), var(--card-h, 80px)) * 0.10); }
+        .card-back-text .ornament { width: calc(min(var(--card-w, 80px), var(--card-h, 80px)) * 0.15); }
+        .card-back::after { inset: calc(min(var(--card-w, 80px), var(--card-h, 80px)) * 0.05); }
+        .card-face { border-radius: calc(min(var(--card-w, 80px), var(--card-h, 80px)) * 0.14); }
 
         /* ===== FACE DE CARTE — Blanc cassé ===== */
         .card-front {
@@ -418,7 +427,7 @@
         }
 
         .card-front .emoji {
-            font-size: calc(var(--card-size, 80px) * 0.44);
+            font-size: calc(min(var(--card-w, 80px), var(--card-h, 80px)) * 0.5);
             line-height: 1;
             filter: drop-shadow(0 3px 6px rgba(27,33,30,0.25));
             transition: transform 0.3s ease;
@@ -795,10 +804,10 @@
         });
 
         /* ===== Ajustement dynamique de la taille des cartes =====
-           Calcule la plus grande taille de carte (carrée) qui tient à la
-           fois en largeur et en hauteur, pour ne laisser (quasiment) aucun
-           espace inutilisé, quel que soit le niveau de difficulté ou la
-           taille de l'écran. */
+           Calcule largeur et hauteur des cartes séparément (cartes
+           rectangulaires) afin de remplir tout l'espace disponible, à la
+           fois horizontalement et verticalement, quel que soit le niveau
+           de difficulté ou la taille de l'écran. */
         function fitGrid() {
             const config = LEVELS[currentLevel];
             const cols = config.cols;
@@ -830,13 +839,19 @@
 
             const availableHeight = window.innerHeight - usedHeight;
 
-            const sizeFromWidth  = (availableWidth  - gridGap * (cols - 1)) / cols;
-            const sizeFromHeight = (availableHeight - gridGap * (rows - 1)) / rows;
+            let cardW = (availableWidth  - gridGap * (cols - 1)) / cols;
+            let cardH = (availableHeight - gridGap * (rows - 1)) / rows;
 
-            let cardSize = Math.min(sizeFromWidth, sizeFromHeight);
-            cardSize = Math.max(56, Math.min(cardSize, 190)); // bornes raisonnables
+            cardW = Math.max(56, Math.min(cardW, 220));
+            cardH = Math.max(56, Math.min(cardH, 260));
 
-            gridEl.style.setProperty('--card-size', cardSize + 'px');
+            // Empêche des cartes trop étirées dans un sens ou dans l'autre
+            const maxRatio = 1.55;
+            if (cardH > cardW * maxRatio) cardH = cardW * maxRatio;
+            if (cardW > cardH * maxRatio) cardW = cardH * maxRatio;
+
+            gridEl.style.setProperty('--card-w', cardW + 'px');
+            gridEl.style.setProperty('--card-h', cardH + 'px');
         }
 
         /* ===== Initialisation ===== */
